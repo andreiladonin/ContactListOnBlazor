@@ -1,0 +1,63 @@
+﻿@page "/";
+
+@using BlazorAppTutoral.Data.Models;
+@using BlazorAppTutoral.Data;
+
+@inject ContactService contactService ;
+
+<h3>Contacts</h3>
+
+@if (obj == null)
+{
+    <h4>Contact list is empty</h4>
+}else
+{
+    <h4>Contact list</h4>
+    <table class="table">
+        <tr class="table-info">
+            <th scope="col">Id</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone number</th>
+            <th scope="col">Delete</th>
+        </tr>
+        @foreach (var contact in obj)
+        {
+            if (contact.IsSelected)
+            {
+                <tr class="table-success">
+                     <th scope="row">@contact.Id</th>
+                     <td>@contact.FullName</td>
+                     <td>@contact.Email</td>
+                     <td>@contact.PhoneNumber</td>
+                     <td><button class="btn btn-danger" @onclick="(() => Delete(contact.Id))"> Delete</button></td>
+                </tr>
+            } else{
+                <tr>
+                     <td scope="row">@contact.Id</td>
+                     <td>@contact.FullName</td>
+                     <td>@contact.Email</td>
+                     <td>@contact.PhoneNumber</td>
+                     <td><button class="btn btn-danger" @onclick="(() => Delete(contact.Id))"> Delete</button></td>
+                </tr>
+            }
+        }
+    </table>
+}
+
+@code {
+
+    List<Contact> obj;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        obj = await Task.Run(() => contactService.GetContactListAsync());    
+    }
+
+    public async Task Delete(int id)
+    {
+        contactService.DeleteContact(id);
+        await OnInitializedAsync();
+    }
+}

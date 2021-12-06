@@ -1,0 +1,35 @@
+﻿@page "/addcontact";
+
+@using BlazorAppTutoral.Data.Models;
+@using BlazorAppTutoral.Data;
+@inject ContactService contactService ;
+
+<h3>Add Contact</h3>
+<div class="form-group">
+    <h3 class="bg-danger text-white">@MyName</h3>
+    <label>Full Name:</label>
+    <input type="text" @bind="@contact.FullName" class="form-control" />
+    <label>Email:</label>
+    <input type="email" @bind="@contact.Email" class="form-control" />
+    <label>Phone Number:</label>
+    <input type="text" @bind="@contact.PhoneNumber" class="form-control" />
+    <label>Selected:</label>
+    <input type="checkbox" @bind="@contact.IsSelected" />
+    <button class="btn btn-success" @onclick="AppendContact">
+        Append Contact
+    </button> 
+</div>
+ 
+
+@code {
+
+    Contact contact = new Contact();
+    public string Title = "Add Contact";
+    public string MyName { get; set; }
+    private void AppendContact(MouseEventArgs e)
+    {
+        contactService.AppendContact(contact);
+        MyName = $"{contact.FullName} added";
+        contact.Id = 0;
+    }
+}
