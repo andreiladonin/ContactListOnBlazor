@@ -31,7 +31,7 @@ namespace BlazorAppTutoral
             services.AddServerSideBlazor();
             services.AddScoped<ContactService>();
             services.AddDbContext<DatabaseContext>(opt =>
-                                      opt.UseSqlite(Configuration.GetConnectionString("DbConnection")));
+                                      opt.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
             
             
         }
